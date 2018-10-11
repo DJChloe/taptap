@@ -43,7 +43,8 @@ prompt#./taptap
 * Chloé Avrillon (myself, aka LadyWasky/Waskol in Delphi and Oric forums)
 
 ## License
-I did not think yet about the licensing model, anyway : 
+This piece of softwares follows the GNU GENERAL PUBLIC LICENSE (Version 3, 29 June 2007)
+Please, note : 
 * The project is open source and offered without any restrictions to the Oric community.
 * I would be pleased and honored to be granted for my work.
 * I do not allow commercial usage of this tool, nor of a part of it's code, without my consent. Terms of such a usage must be debated with me, Chloé AVRILLON, original author of taptap.
