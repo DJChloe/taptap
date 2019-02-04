@@ -30,20 +30,20 @@ begin
       else
       if check_1(Fileindex,TapName,Catalogue) then
       begin
-        //get the name of tempfile
-        TempFile:=TPath.GetTempFileName;
-        f1:=TFileStream.Create(tapname,fmOpenRead);
-        f2:=tfilestream.Create(TempFile,fmOpenWrite);
-
-        try
-          for i := 0 to Catalogue.Count-1 do
+        for i := 0 to Catalogue.Count-1 do
+        begin
+          if ((FileIndex=i) or (FileIndex=FI_ALL)) then
           begin
-            OricFile:=Catalogue.Items[Fileindex];
-            if ((FileIndex=i) or (FileIndex=FI_ALL)) then
-            begin
-              f1.position:=Catalogue.Items[Fileindex].StartHeader+3;
+            //get the name of tempfile
+            TempFile:=TPath.GetTempFileName;
+            f1:=TFileStream.Create(tapname,fmOpenRead);
+            f2:=tfilestream.Create(TempFile,fmOpenWrite);
+            f1.Position:=0;
+            try
+              OricFile:=Catalogue.Items[i];
+              //f1.position:=Catalogue.Items[i].StartHeader+3;
               // copy .tap data from start of file to name field of indextodo
-              f2.CopyFrom(f1,Oricfile.StartName-f1.position+1);
+              f2.CopyFrom(f1,Oricfile.StartName);   //
               // skip source name
               f1.position:=Oricfile.StartData;
 
@@ -61,16 +61,16 @@ begin
               b:=0;
               f2.Write(b,1);
               //name done
-              writeln('File #'+FileIndex.ToString+' has been renamed to ('+nname+')');
-            end
-            else f2.CopyFrom(f1,OricFile.Endpos-f1.position+1);
+              writeln('File #'+i.ToString+' has been renamed to ('+nname+')');
+              f2.CopyFrom(f1,f1.size-f1.position-1);
+            finally
+              f1.Free;
+              f2.Free;
+            end;
+            TFile.Copy(TempFile,tapname,true);
+            TFile.Delete(TempFile);
           end;
-        finally
-          f1.Free;
-          f2.Free;
         end;
-        TFile.Copy(TempFile,tapname,true);
-        TFile.Delete(TempFile);
       end;
     finally
       Catalogue.Free;
