@@ -38,10 +38,10 @@ begin
         try
           for i := 0 to Catalogue.Count-1 do
           begin
+            OricFile:=Catalogue.Items[Fileindex];
             if ((FileIndex=i) or (FileIndex=FI_ALL)) then
             begin
               f1.position:=Catalogue.Items[Fileindex].StartHeader+3;
-              OricFile:=Catalogue.Items[Fileindex];
               // copy .tap data from start of file to name field of indextodo
               f2.CopyFrom(f1,Oricfile.StartName-f1.position+1);
               // skip source name
