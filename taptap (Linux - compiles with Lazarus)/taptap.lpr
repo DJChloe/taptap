@@ -97,62 +97,64 @@ begin
     end;
 end;
 
-function checkparams_auto_del(var fileindex:integer;var tapname:string):boolean;
-var index:integer;
-    FileIndexString:string;
+function checkparams_auto_del(var fileindex: integer; var tapname: string): boolean;
+var
+  index: integer;
+  FileIndexString: string;
 begin
-    result:=false;
-    fileindex:=-1;
-    tapname:='';
-    if ParamCount<3
-    then writeln('Not enough parameters !')
+  result := false;
+  fileindex := -1;
+  tapname := '';
+  if ParamCount < 3 then
+    writeln('Not enough parameters !')
+  else
+  begin
+    index := 2;
+    FileIndexString := ParamStr(index);
+    if UpperCase(FileIndexString) = 'ALL' then
+      fileindex := -2
     else
     begin
-      index:=2;
-      FileIndexString:=ParamStr(index);
-      if UpperCase(FileIndexString)='ALL'
-      then fileindex:=-2
-      else begin
-              fileindex:=StrToIntDef(FileIndexString,-1);
-              if fileindex=-1 then
-              begin
-                writeln('Impossible :');
-                writeln('The <FileIndex> is not valid and must be a valid integer');
-                writeln('Check your syntax.');
-              end;
-      end;
-
-      index:=3;
-      if ParamCount<index
-      then writeln('Not enough parameters !')
-      else
+      fileindex := StrToIntDef(FileIndexString, -1);
+      if fileindex = -1 then
       begin
-        tapname:=ParamStr(index);
-        if UpperCase(tapname)='FROM'
-        then
-        begin
-          inc(index);
-          if ParamCount<index
-          then writeln('Not enough parameters !')
-          else
-          begin
-            tapname:=ParamStr(index);
-            if not FileExists(tapname)
-            then writeln('The file ',tapname,' does not exist !')
-            else result:=true;
-          end;
-        end;
-      end
-        else
-          begin
-            tapname:=ParamStr(index);
-            if not FileExists(tapname)
-            then writeln('The file ',tapname,' does not exist !')
-            else result:=true;
-          end;
+        writeln('Impossible :');
+        writeln('The <FileIndex> is not valid and must be a valid integer');
+        writeln('Check your syntax.');
       end;
     end;
+
+    index := 3;
+    if ParamCount < index then
+      writeln('Not enough parameters !')
+    else
+    begin
+      tapname := ParamStr(index);
+      if UpperCase(tapname) = 'FROM' then
+      begin
+        inc(index);
+        if ParamCount < index then
+          writeln('Not enough parameters !')
+        else
+        begin
+          tapname := ParamStr(index);
+          if not FileExists(tapname) then
+            writeln('The file ', tapname, ' does not exist !')
+          else
+            result := true;
+        end;
+      end
+      else
+      begin
+        if not FileExists(tapname) then
+          writeln('The file ', tapname, ' does not exist !')
+        else
+          result := true;
+      end;
+    end;
+  end;
 end;
+
 
 function checkparams_copy(var fileindex:integer;var tapname,destdirectory:string):boolean;
 var index:integer;
